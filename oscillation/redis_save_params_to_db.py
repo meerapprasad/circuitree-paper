@@ -79,8 +79,10 @@ if __name__ == "__main__":
         # "~/git/circuitree-paper/data/oscillation/param_sets_queue_10000.csv"
         # "~/git/circuitree-paper/data/oscillation/param_sets_queue_10000_5tf.csv"
         # "~/git/circuitree-paper/data/oscillation/231020_param_sets_10000_5tf.csv"
-        "~/git/circuitree-paper/data/oscillation"
-        "/231104_param_sets_10000_5tf_pmutation0.5.csv"
+        # "~/git/circuitree-paper/data/oscillation"
+        # "/231104_param_sets_10000_5tf_pmutation0.5.csv"
+        "/home/mprasad/PycharmProjects/HomeostasisCircuits_v1/circuitree-paper/oscillation/data/"
+        "oscillation/240415_param_sets_10000_5tf_pmutation0.5.csv"
     ).expanduser()
 
     main(

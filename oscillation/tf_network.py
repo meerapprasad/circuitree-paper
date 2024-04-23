@@ -12,6 +12,8 @@ from gillespie import (
     DEFAULT_PARAMS,
 )
 
+from ode import ODESolve
+
 
 class TFNetworkModel:
     """
@@ -46,7 +48,9 @@ class TFNetworkModel:
     def __init__(
         self,
         genotype: str,
+        # define dt and nt, then initialize=True, o/w initialize_ssa
         initialize: bool = False,
+        initialize_ode: bool = False,
         seed: Optional[int] = None,
         dt: Optional[float] = None,
         nt: Optional[int] = None,
@@ -76,6 +80,31 @@ class TFNetworkModel:
             self.initialize_ssa(
                 self.seed, self.dt, self.nt, self.max_iter_per_timestep, **kwargs
             )
+        self.ode: ODESolve | None = None
+        if initialize_ode:
+            self.initialize_ode(
+                self.seed, self.dt, self.nt, self.max_iter_per_timestep, **kwargs
+            )
+
+    def initialize_ode(
+            self,
+            seed: Optional[int] = None,
+            dt: Optional[float] = None,
+            nt: Optional[int] = None,
+    ):
+
+        seed = self.seed if seed is None else seed
+        t = dt * np.arange(nt)
+        self.ode = ODESolve(
+            seed,
+            self.m,
+            self.activations,
+            self.inhibitions,
+            dt,
+            nt,
+            self.max_iter_per_timestep,
+        )
+
 
     def initialize_ssa(
         self,
@@ -117,6 +146,7 @@ class TFNetworkModel:
         return self.ssa.run_with_params(pop0, params, seed=seed, maxiter_ok=maxiter_ok)
 
     def run_ssa_with_params_in_chunks(
+            # todo: for running code that needs to be stopped, numba continues and cannot be stopped
         self, pop0, params, nchunks=1, seed=None, maxiter_ok=True
     ):
         """Run the simulation, splitting time into nchunks chunks. This allows the

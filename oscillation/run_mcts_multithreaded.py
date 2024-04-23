@@ -53,7 +53,7 @@ def main(
     )
     if seed is not None:
         mtree_kw["seed"] = seed
-
+    print('trying to build')
     mtree = BatchedOscillationTree(**mtree_kw)
 
     print(f"Making a search tree with {threads} search threads.")
@@ -135,17 +135,25 @@ if __name__ == "__main__":
     max_interactions = 15
 
     now = datetime.now().strftime("%y%m%d-%H-%M-%S")
+    # save_dir = Path(
+    #     f"~/git/circuitree-paper/data/oscillation/mcts/"
+    #     f"{now}_5tf_exhaustion_mutationrate0.5_batch{batch_size}"
+    #     f"_max_interactions{max_interactions}"
+    #     f"_exploration{exploration_constant:.3f}"
+    # ).expanduser()
+
     save_dir = Path(
-        f"~/git/circuitree-paper/data/oscillation/mcts/"
+        f"data/oscillation/mcts/"
         f"{now}_5tf_exhaustion_mutationrate0.5_batch{batch_size}"
         f"_max_interactions{max_interactions}"
         f"_exploration{exploration_constant:.3f}"
     ).expanduser()
+
     save_dir.mkdir()
     backup_dir = save_dir.joinpath("backups")
     backup_dir.mkdir()
 
-    log_file = Path(f"~/git/circuitree-paper/logs/worker-logs/main.log").expanduser()
+    log_file = Path(f"data/logs/worker-logs/main.log").expanduser()
     log_file.parent.mkdir(exist_ok=True)
     logging.basicConfig(
         filename=str(log_file),
@@ -157,7 +165,7 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger(__name__)
     logger.info("Running main() program.")
-
+    print('pre-main')
     main(
         logger=logger,
         save_dir=save_dir,

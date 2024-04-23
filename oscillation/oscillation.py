@@ -43,6 +43,10 @@ class OscillationTree(SimpleNetworkTree):
         visits = self.graph.nodes[state]["visits"]
         return visits > 0 and reward / visits >= self.Q_threshold
 
+    def is_terminal(self, state):
+        """Return True if the state is a terminal state."""
+        return state.startswith("*")
+
     def get_reward(
         self,
         state: str,
